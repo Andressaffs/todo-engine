@@ -18,6 +18,6 @@ class TodoController(private val todoService: TodoService) {
 
     @Get("/{id}")
     fun getByIdTodo(@PathVariable("id") id: UUID): HttpResponse<Todo> {
-        return HttpResponse.ok(this.todoService.getByIdTodo(id))
+        return HttpResponse.ok(todoService.getByIdTodo(id))
     }
 }

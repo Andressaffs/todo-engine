@@ -23,15 +23,18 @@ class TodoRepositoryImpl(private val cqlSession: CqlSession) : TodoRepository {
     }
 
     override fun getByIdCql(id: UUID): Todo? {
-        val result = cqlSession.execute(SimpleStatement.newInstance("SELECT*FROM todo.Todo WHERE id=?"))
-        return result.map { todo ->
+        val result = cqlSession.execute(SimpleStatement
+            .newInstance(
+                "SELECT * FROM todo WHERE id=?",
+                id
+            ))
+        return result.map { it ->
             Todo(
-                todo.getUuid("id")!!,
-                todo.getString("date")!!,
-                todo.getString("description")!!,
-                todo.getBoolean("done")!!
+                it.getUuid("id")!!,
+                it.getString("date")!!,
+                it.getString("description")!!,
+                it.getBoolean("done")!!
             )
-        }.firstOrNull()
-
+        }.single()
     }
 }
